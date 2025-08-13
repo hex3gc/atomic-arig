@@ -224,7 +224,7 @@ table.insert(data.raw["technology"]["planetaris-automation-4"].effects, {type = 
 data.raw["technology"]["nuclear-power"].prerequisites = {"planetaris-simulating-unit"};
 
 -- Add Vulcanus prereq to Logistics 4, remove simulating unit
-data.raw["technology"]["planetaris-hyper-transport-belt"].prerequisites = {"planetaris-silica-processing", "turbo-transport-belt"};
+data.raw["technology"]["planetaris-hyper-transport-belt"].prerequisites = {"planetaris-simulating-unit", "turbo-transport-belt"};
 
 -- Raw quartz productivity localized to Arig
 removePackFromTech("planetaris-raw-quartz-productivity", "metallurgic-science-pack");
@@ -431,6 +431,7 @@ end
 --data.raw["assembling-machine"]["planetaris-assembling-machine-4"].allowed_effects = {"speed", "productivity", "quality"};
 data.raw["assembling-machine"]["planetaris-assembling-machine-4"].crafting_speed = 1.75;
 data.raw["item"]["planetaris-assembling-machine-4"].weight = data.raw["item"]["assembling-machine-3"].weight; -- only 3 could fit on a rocket for some reason
+data.raw["assembling-machine"]["planetaris-assembling-machine-4"].energy_usage = "232kW";
 
 -- Modify Atom Forge, halved energy usage to justify higher crafting costs
 --data.raw["assembling-machine"]["atan-atom-forge"].energy_source = {type = "void"};
