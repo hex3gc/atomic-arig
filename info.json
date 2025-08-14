@@ -4,7 +4,7 @@
   "description": "Uranium is now a resource unique to Planetaris Unbounded's Arig. Moves nuclear sciences onto the planet, tweaks recipes, and adjusts the tech tree to provide an alternative experience.",
   "author": "hex3",
   "homepage": "",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "factorio_version": "2.0",
   "dependencies": 
   [

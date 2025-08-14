@@ -184,7 +184,7 @@ data.raw["technology"]["kovarex-enrichment-process"].unit.ingredients =
     {"automation-science-pack", 1},
     {"logistic-science-pack", 1},
     {"chemical-science-pack", 1},
-    {"production-science-pack", 1},
+    {"space-science-pack", 1},
     {"planetaris-compression-science-pack", 1}
 }
 
@@ -234,6 +234,17 @@ removePackFromTech("planetaris-advanced-solar-panel", "metallurgic-science-pack"
 
 -- Quantum processor simulating unit prereq
 table.insert(data.raw["technology"]["quantum-processor"].prerequisites, "planetaris-simulating-unit");
+
+-- Remove production science from some techs, balancing out the progression a bit more
+removePackFromTech("kovarex-enrichment-process", "production-science-pack");
+data.raw["technology"]["kovarex-enrichment-process"].prerequisites = {"planetaris-compression-science"};
+removePackFromTech("planetaris-sandstone-foundation", "production-science-pack");
+data.raw["technology"]["planetaris-sandstone-foundation"].prerequisites = {"planetaris-compression-science"};
+removePackFromTech("planetaris-silica-processing", "production-science-pack");
+data.raw["technology"]["planetaris-silica-processing"].prerequisites = {"planetaris-compression-science"};
+removePackFromTech("planetaris-advanced-solar-panel", "production-science-pack");
+removePackFromTech("planetaris-simulating-unit", "production-science-pack");
+addPackToTech("nuclear-power", "space-science-pack", 1);
 
 -- Optionally remove big container research
 if settings.startup["h3-arig-removeContainer"].value == true then
@@ -408,7 +419,7 @@ if settings.startup["h3-arig-lubricatedPress"].value == true then
     addFluidToRecipe("planetaris-plastic-bar", "lubricant", 10);
 
     removeItemFromRecipe("planetaris-solid-fuel-from-heavy-oil", "heavy-oil");
-    addFluidToRecipe("planetaris-solid-fuel-from-heavy-oil", "heavy-oil", 10);
+    addFluidToRecipe("planetaris-solid-fuel-from-heavy-oil", "heavy-oil", 5);
     addFluidToRecipe("planetaris-solid-fuel-from-heavy-oil", "lubricant", 10);
 
     removeItemFromRecipe("planetaris-solid-fuel-from-light-oil", "light-oil");

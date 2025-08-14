@@ -1,5 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.0.1
+Date: 2025-8-14
+  Changes:
+    - Removed production science from some techs for easier access to nuclear power, silica processing, and platform building
+    - Heavy oil to solid fuel lubricated compression recipe requires 5 heavy oil (from 10)
+---------------------------------------------------------------------------------------------------
 Version: 1.0.0
-Date: 2025-7-12
-  Features:
+Date: 2025-8-13
+  Changes:
     - Initial release
