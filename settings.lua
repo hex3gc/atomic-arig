@@ -25,3 +25,12 @@ data:extend
         default_value = true
     }
 })
+data:extend
+({
+    {
+        type = "bool-setting",
+        name = "h3-arig-harderWater",
+        setting_type = "startup",
+        default_value = true
+    }
+})

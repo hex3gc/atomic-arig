@@ -1,4 +1,13 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.0.2
+Date: 2025-9-4
+  Changes:
+    - Optional nerf to the new water collectors. We are on a dry dry planet, after all
+    - Adjusted tech requirements for supported solar panels & power poles
+    - De-purpled reinforced glass
+  Bugfixes:
+    - Fixed startup crash with new Planetaris Unbounded update
+---------------------------------------------------------------------------------------------------
 Version: 1.0.1
 Date: 2025-8-14
   Changes:

@@ -233,7 +233,7 @@ removePackFromTech("planetaris-raw-quartz-productivity", "metallurgic-science-pa
 removePackFromTech("planetaris-advanced-solar-panel", "metallurgic-science-pack");
 
 -- Quantum processor simulating unit prereq
-table.insert(data.raw["technology"]["quantum-processor"].prerequisites, "planetaris-simulating-unit");
+table.insert(data.raw["technology"]["quantum-processor"].prerequisites, "planetaris-sand-sifting");
 
 -- Remove production science from some techs, balancing out the progression a bit more
 removePackFromTech("kovarex-enrichment-process", "production-science-pack");
@@ -245,6 +245,12 @@ data.raw["technology"]["planetaris-silica-processing"].prerequisites = {"planeta
 removePackFromTech("planetaris-advanced-solar-panel", "production-science-pack");
 removePackFromTech("planetaris-simulating-unit", "production-science-pack");
 addPackToTech("nuclear-power", "space-science-pack", 1);
+
+-- UPDATE change water harvesting prereqs
+data.raw["technology"]["planetaris-water-harvesting"].prerequisites = {"planetaris-sand-sifting"};
+
+-- UPDATE vulcanus science pack embargo
+removePackFromTech("planetaris-supported-solar-panel", "metallurgic-science-pack");
 
 -- Optionally remove big container research
 if settings.startup["h3-arig-removeContainer"].value == true then
@@ -410,6 +416,7 @@ addItemToRecipe("planetaris-press", "planetaris-heavy-glass", 20);
 
 -- Change heavy glass graphics
 data.raw["item"]["planetaris-heavy-glass"].icon = "__atomic-arig__/graphics/icons/h3-arig-heavy-glass.png";
+data.raw["recipe"]["planetaris-heavy-glass"].icon = "__atomic-arig__/graphics/icons/h3-arig-heavy-glass.png";
 
 -- Optional: New chemical compression recipes now use lubricant as a catalyst for significant efficiency gains
 if settings.startup["h3-arig-lubricatedPress"].value == true then
@@ -431,6 +438,11 @@ if settings.startup["h3-arig-lubricatedPress"].value == true then
     addFluidToRecipe("planetaris-solid-fuel-from-petroleum-gas", "lubricant", 10);
 
     addFluidToRecipe("planetaris-carbon", "lubricant", 10);
+end
+
+-- Optional: Make water harvesting much less efficient (We are on a dry planet after all)
+if settings.startup["h3-arig-harderWater"].value == true then
+    data.raw["recipe"]["planetaris-water-harvesting"].results = {{type="fluid", name="water", amount=10}};
 end
 
 -- #endregion
