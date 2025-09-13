@@ -120,7 +120,9 @@ data.raw["planet"]["arig"].map_gen_settings.autoplace_settings =
 
 -- Change space location params
 data.raw["planet"]["arig"].orientation = 0.40;
-data.raw["space-connection"]["vulcanus-arig"].length = 25000;
+if data.raw["space-connection"]["vulcanus-arig"] ~= nil then
+    data.raw["space-connection"]["vulcanus-arig"].length = 25000;
+end
 
 -- Remove uranium ore from Nauvis
 for i, autoplace in pairs(data.raw["planet"]["nauvis"].map_gen_settings.autoplace_controls) do
