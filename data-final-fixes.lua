@@ -235,7 +235,7 @@ removePackFromTech("planetaris-raw-quartz-productivity", "metallurgic-science-pa
 removePackFromTech("planetaris-advanced-solar-panel", "metallurgic-science-pack");
 
 -- Quantum processor simulating unit prereq
-table.insert(data.raw["technology"]["quantum-processor"].prerequisites, "planetaris-sand-sifting");
+table.insert(data.raw["technology"]["quantum-processor"].prerequisites, "planetaris-simulating-unit");
 
 -- Remove production science from some techs, balancing out the progression a bit more
 if data.raw["technology"]["kovarex-enrichment-process"].unit ~= nil then
