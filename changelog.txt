@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.0.6
+Date: 2025-11-12
+  Bugfixes:
+    - Late fix for Planetaris Unbounded being split into two mods
+    - Since Hyarion takes some of Arig's components, a few tweaks had to be removed, for example anything that required simulating units
+---------------------------------------------------------------------------------------------------
 Version: 1.0.5
 Date: 2025-9-13
   Bugfixes:
