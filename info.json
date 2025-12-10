@@ -4,13 +4,13 @@
   "description": "Uranium is now a resource unique to Planetaris Unbounded's Arig. Moves nuclear sciences onto the planet, tweaks recipes, and adjusts the tech tree to provide an alternative experience.",
   "author": "hex3",
   "homepage": "https://github.com/hex3gc/atomic-arig",
-  "version": "1.0.5",
+  "version": "1.0.7",
   "factorio_version": "2.0",
   "dependencies": 
   [
     "base >= 2.0.0",
     "atan-nuclear-science",
-    "planetaris-unbounded",
+    "planetaris-arig",
     "? AtomicRobotsFix2Boost"
   ],
   "quality_required": false,

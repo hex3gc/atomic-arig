@@ -1,3 +1,9 @@
+H3_ARIG_RECYCLING = nil
+
+if mods["quality"] then
+    H3_ARIG_RECYCLING = require("__quality__/prototypes/recycling")
+end
+
 local function removeItemFromRecipe(recipeName, itemName)
     for i, ingredient in pairs(data.raw["recipe"][recipeName].ingredients) do
         if ingredient.name == itemName then
@@ -148,9 +154,9 @@ for i, technology in pairs(data.raw["technology"]) do
                 table.remove(technology.prerequisites, j);
                 table.insert(technology.prerequisites, "planetaris-compression-science");
             end
-            if prerequisite == "planetaris-heavy-glass" then -- Remove heavy glass prereqs
+            if prerequisite == "planetaris-heavy-glass" or prerequisite == "planetaris-glass" then -- Remove glass prereqs
                 table.remove(technology.prerequisites, j);
-                table.insert(technology.prerequisites, "planetaris-compression-science");
+                table.insert(technology.prerequisites, "planetaris-sand-sifting");
             end
         end
     end
@@ -220,15 +226,8 @@ table.insert(data.raw["technology"]["planetaris-advanced-sand-sifting"].effects,
 table.insert(data.raw["technology"]["planetaris-compression"].effects, {type = "unlock-recipe", recipe = "h3-arig-sandstone-brick-concrete"});
 table.insert(data.raw["technology"]["planetaris-compression"].effects, {type = "unlock-recipe", recipe = "h3-arig-sandstone-brick-refined-concrete"});
 
--- Move atom forge to Automation 4
-data.raw["technology"]["atan-atom-forge"] = nil;
-table.insert(data.raw["technology"]["planetaris-automation-4"].effects, {type = "unlock-recipe", recipe = "atan-atom-forge"});
-
 -- Add simulating units to reactors
-data.raw["technology"]["nuclear-power"].prerequisites = {"planetaris-simulating-unit"};
-
--- Add Vulcanus prereq to Logistics 4, remove simulating unit
-data.raw["technology"]["planetaris-hyper-transport-belt"].prerequisites = {"planetaris-simulating-unit", "turbo-transport-belt"};
+--data.raw["technology"]["nuclear-power"].prerequisites = {"planetaris-simulating-unit"};
 
 -- Raw quartz productivity localized to Arig
 removePackFromTech("planetaris-raw-quartz-productivity", "metallurgic-science-pack");
@@ -237,7 +236,7 @@ removePackFromTech("planetaris-raw-quartz-productivity", "metallurgic-science-pa
 removePackFromTech("planetaris-advanced-solar-panel", "metallurgic-science-pack");
 
 -- Quantum processor simulating unit prereq
-table.insert(data.raw["technology"]["quantum-processor"].prerequisites, "planetaris-simulating-unit");
+--table.insert(data.raw["technology"]["quantum-processor"].prerequisites, "planetaris-simulating-unit");
 
 -- Remove production science from some techs, balancing out the progression a bit more
 if data.raw["technology"]["kovarex-enrichment-process"].unit ~= nil then
@@ -249,52 +248,61 @@ data.raw["technology"]["planetaris-sandstone-foundation"].prerequisites = {"plan
 removePackFromTech("planetaris-silica-processing", "production-science-pack");
 data.raw["technology"]["planetaris-silica-processing"].prerequisites = {"planetaris-compression-science"};
 removePackFromTech("planetaris-advanced-solar-panel", "production-science-pack");
-removePackFromTech("planetaris-simulating-unit", "production-science-pack");
+--removePackFromTech("planetaris-simulating-unit", "production-science-pack");
 addPackToTech("nuclear-power", "space-science-pack", 1);
 
--- UPDATE change water harvesting prereqs
+-- change water harvesting prereqs
 data.raw["technology"]["planetaris-water-harvesting"].prerequisites = {"planetaris-sand-sifting"};
 
--- UPDATE vulcanus science pack embargo
+-- vulcanus science pack embargo
 removePackFromTech("planetaris-supported-solar-panel", "metallurgic-science-pack");
 
--- Optionally remove big container research
+-- vulcanus science pack embargo 2
+removePackFromTech("planetaris-arig-roboport", "metallurgic-science-pack");
+removePackFromTech("planetaris-big-chest", "metallurgic-science-pack");
+
+-- I don't mind the container anymore
+--[[
 if settings.startup["h3-arig-removeContainer"].value == true then
     data.raw["technology"]["planetaris-big-chest"] = nil;
 end
+]]
 
--- Optionally make belts higher tech and more difficult to craft
-if settings.startup["h3-arig-difficultBelts"].value == true then
-    -- Tech
-    table.insert(data.raw["technology"]["planetaris-hyper-transport-belt"].prerequisites, "carbon-fiber");
-    table.insert(data.raw["technology"]["planetaris-hyper-transport-belt"].prerequisites, "electromagnetic-science-pack");
-    addPackToTech("planetaris-hyper-transport-belt", "agricultural-science-pack", 1);
-    addPackToTech("planetaris-hyper-transport-belt", "electromagnetic-science-pack", 1);
+-- Anything done to belts must be done without Hyarion, since that changes too much
+if not mods["planetaris-hyarion"] then
+    -- Optionally make belts higher tech and more difficult to craft
+    if settings.startup["h3-arig-difficultBelts"].value == true then
+        -- Tech
+        data.raw["technology"]["planetaris-hyper-transport-belt"].prerequisites = {"carbon-fiber", "electromagnetic-science-pack", "planetaris-silica-processing", "turbo-transport-belt"};
+        addPackToTech("planetaris-hyper-transport-belt", "agricultural-science-pack", 1);
+        addPackToTech("planetaris-hyper-transport-belt", "electromagnetic-science-pack", 1);
 
-    -- Recipe
-    removeItemFromRecipe("planetaris-hyper-transport-belt", "planetaris-silica");
-    addItemToRecipe("planetaris-hyper-transport-belt", "planetaris-silica", 1);
-    addItemToRecipe("planetaris-hyper-transport-belt", "carbon-fiber", 1);
-    addItemToRecipe("planetaris-hyper-transport-belt", "superconductor", 1);
+        -- Recipe
+        removeItemFromRecipe("planetaris-hyper-transport-belt", "planetaris-silica");
+        addItemToRecipe("planetaris-hyper-transport-belt", "planetaris-silica", 1);
+        addItemToRecipe("planetaris-hyper-transport-belt", "carbon-fiber", 1);
+        addItemToRecipe("planetaris-hyper-transport-belt", "superconductor", 1);
 
-    removeItemFromRecipe("planetaris-hyper-underground-belt", "lubricant");
-    removeItemFromRecipe("planetaris-hyper-underground-belt", "planetaris-silica");
-    addItemToRecipe("planetaris-hyper-underground-belt", "planetaris-silica", 5);
-    addItemToRecipe("planetaris-hyper-underground-belt", "carbon-fiber", 5);
-    addItemToRecipe("planetaris-hyper-underground-belt", "superconductor", 5);
-    addFluidToRecipe("planetaris-hyper-underground-belt", "lubricant", 40);
+        removeItemFromRecipe("planetaris-hyper-underground-belt", "planetaris-silica");
+        addItemToRecipe("planetaris-hyper-underground-belt", "planetaris-silica", 5);
+        addItemToRecipe("planetaris-hyper-underground-belt", "carbon-fiber", 5);
+        addItemToRecipe("planetaris-hyper-underground-belt", "superconductor", 5);
 
-    removeItemFromRecipe("planetaris-hyper-splitter", "planetaris-silica");
-    removeItemFromRecipe("planetaris-hyper-splitter", "processing-unit");
-    addItemToRecipe("planetaris-hyper-splitter", "planetaris-simulating-unit", 1);
-    addItemToRecipe("planetaris-hyper-splitter", "carbon-fiber", 2);
-    addItemToRecipe("planetaris-hyper-splitter", "superconductor", 2);
-    addFluidToRecipe("planetaris-hyper-splitter", "lubricant", 80);
+        removeItemFromRecipe("planetaris-hyper-splitter", "planetaris-silica");
+        addItemToRecipe("planetaris-hyper-splitter", "carbon-fiber", 2);
+        addItemToRecipe("planetaris-hyper-splitter", "superconductor", 2);
 
-    -- Entity
-    data.raw["transport-belt"]["planetaris-hyper-transport-belt"].speed = 0.1875;
-    data.raw["underground-belt"]["planetaris-hyper-underground-belt"].speed = 0.1875;
-    data.raw["splitter"]["planetaris-hyper-splitter"].speed = 0.1875;
+        if H3_ARIG_RECYCLING ~= nil then
+            H3_ARIG_RECYCLING.generate_recycling_recipe(data.raw["recipe"]["planetaris-hyper-transport-belt"])
+            H3_ARIG_RECYCLING.generate_recycling_recipe(data.raw["recipe"]["planetaris-hyper-underground-belt"])
+            H3_ARIG_RECYCLING.generate_recycling_recipe(data.raw["recipe"]["planetaris-hyper-splitter"])
+        end
+
+        -- Entity
+        data.raw["transport-belt"]["planetaris-hyper-transport-belt"].speed = 0.1875;
+        data.raw["underground-belt"]["planetaris-hyper-underground-belt"].speed = 0.1875;
+        data.raw["splitter"]["planetaris-hyper-splitter"].speed = 0.1875;
+    end
 end
 
 -- #endregion
@@ -310,7 +318,7 @@ addItemToRecipe("planetaris-heavy-glass", "planetaris-glass-panel", 2);
 
 -- Add uranium to planetaris science
 removeItemFromRecipe("planetaris-compression-science-pack", "planetaris-sandstone-brick");
-addItemToRecipe("planetaris-compression-science-pack", "uranium-238", 10);
+addItemToRecipe("planetaris-compression-science-pack", "uranium-238", 1);
 
 -- Add uranium ore to sand sifting, and extra sulfur to compensate for additional costs elsewhere
 removeItemFromRecipeResults("planetaris-sand-sifting", "sulfur");
@@ -323,6 +331,7 @@ removeItemFromRecipe("planetaris-raw-quartz", "planetaris-sandstone-brick");
 addItemToRecipe("planetaris-raw-quartz", "planetaris-sandstone-brick", 4);
 
 -- Assembler 4 recipe: Add nuclear components, remove tungsten, remove EM plant
+--[[
 data.raw["recipe"]["planetaris-assembling-machine-4"].ingredients =
 {
     {type = "item", name = "planetaris-simulating-unit", amount = 10},
@@ -330,12 +339,14 @@ data.raw["recipe"]["planetaris-assembling-machine-4"].ingredients =
     {type = "item", name = "uranium-fuel-cell", amount = 4},
 };
 data.raw["recipe"]["planetaris-assembling-machine-4"].category = "crafting";
+]]
 
 -- Atom forge recipe: Add simulating unit and nuclear components
 data.raw["recipe"]["atan-atom-forge"].ingredients =
 {
     {type = "item", name = "centrifuge", amount = 2},
-    {type = "item", name = "planetaris-simulating-unit", amount = 40},
+    {type = "item", name = "processing-unit", amount = 40},
+    {type = "item", name = "planetaris-heavy-glass", amount = 20},
     {type = "item", name = "refined-concrete", amount = 100},
     {type = "item", name = "uranium-fuel-cell", amount = 24},
 };
@@ -349,60 +360,62 @@ data.raw["recipe"]["atan-atom-forge"].surface_conditions =
 };
 
 -- Make simulating units cheaper on heavy glass, remove EM plant restriction because why
+--[[
 removeItemFromRecipe("planetaris-simulating-unit", "planetaris-heavy-glass");
 removeItemFromRecipe("planetaris-simulating-unit", "planetaris-silica");
 addItemToRecipe("planetaris-simulating-unit", "planetaris-heavy-glass", 2);
 addItemToRecipe("planetaris-simulating-unit", "planetaris-silica", 5);
 addFluidToRecipe("planetaris-simulating-unit", "sulfuric-acid", 5);
 data.raw["recipe"]["planetaris-simulating-unit"].category = "electronics";
+]]
 
--- Why is the EM plant used for everything it's not even a tech prerequisite :(
-data.raw["recipe"]["planetaris-hyper-transport-belt"].category = "metallurgy";
-data.raw["recipe"]["planetaris-hyper-underground-belt"].category = "metallurgy";
-data.raw["recipe"]["planetaris-hyper-splitter"].category = "metallurgy";
-data.raw["recipe"]["planetaris-hyper-transport-belt"].surface_conditions =
-{
+-- EM -> Metallurgy for belts
+if not mods["planetaris-hyarion"] then
+    data.raw["recipe"]["planetaris-hyper-transport-belt"].category = "metallurgy";
+    data.raw["recipe"]["planetaris-hyper-underground-belt"].category = "metallurgy";
+    data.raw["recipe"]["planetaris-hyper-splitter"].category = "metallurgy";
+    data.raw["recipe"]["planetaris-hyper-transport-belt"].surface_conditions =
     {
-        property = "pressure",
-        min = 4000,
-        max = 4000,
-    }
-};
-data.raw["recipe"]["planetaris-hyper-underground-belt"].surface_conditions =
-{
+        {
+            property = "pressure",
+            min = 4000,
+            max = 4000,
+        }
+    };
+    data.raw["recipe"]["planetaris-hyper-underground-belt"].surface_conditions =
     {
-        property = "pressure",
-        min = 4000,
-        max = 4000,
-    }
-};
-data.raw["recipe"]["planetaris-hyper-splitter"].surface_conditions =
-{
+        {
+            property = "pressure",
+            min = 4000,
+            max = 4000,
+        }
+    };
+    data.raw["recipe"]["planetaris-hyper-splitter"].surface_conditions =
     {
-        property = "pressure",
-        min = 4000,
-        max = 4000,
-    }
-};
+        {
+            property = "pressure",
+            min = 4000,
+            max = 4000,
+        }
+    };
+end
 
 -- Change centrifuge
 removeItemFromRecipe("centrifuge", "steel-plate");
 addItemToRecipe("centrifuge", "planetaris-heavy-glass", 20);
 
--- Add simulating unit to reactors & quantum processors, making them more useful
+-- Change reactor recipes
 removeItemFromRecipe("nuclear-reactor", "advanced-circuit");
 removeItemFromRecipe("nuclear-reactor", "steel-plate");
 removeItemFromRecipe("nuclear-reactor", "copper-plate");
-addItemToRecipe("nuclear-reactor", "planetaris-simulating-unit", 100);
 addItemToRecipe("nuclear-reactor", "steel-plate", 100);
 addItemToRecipe("nuclear-reactor", "copper-plate", 100);
 addItemToRecipe("nuclear-reactor", "planetaris-heavy-glass", 100);
-removeItemFromRecipe("fission-reactor-equipment", "processing-unit");
-addItemToRecipe("fission-reactor-equipment", "planetaris-simulating-unit", 40);
+addItemToRecipe("nuclear-reactor", "processing-unit", 100);
 addItemToRecipe("fission-reactor-equipment", "planetaris-glass-panel", 20);
 
-removeItemFromRecipe("quantum-processor", "processing-unit");
-addItemToRecipe("quantum-processor", "planetaris-simulating-unit", 1);
+--removeItemFromRecipe("quantum-processor", "processing-unit");
+--addItemToRecipe("quantum-processor", "planetaris-simulating-unit", 1);
 
 -- Simple recipe for sandstone, might serve as a stone sink
 data.raw["recipe"]["planetaris-sandstone-brick"].category = "crafting-with-fluid";
@@ -451,6 +464,17 @@ if settings.startup["h3-arig-harderWater"].value == true then
     data.raw["recipe"]["planetaris-water-harvesting"].results = {{type="fluid", name="water", amount=10}};
 end
 
+if H3_ARIG_RECYCLING ~= nil then
+    H3_ARIG_RECYCLING.generate_recycling_recipe(data.raw["recipe"]["planetaris-heavy-glass"])
+    H3_ARIG_RECYCLING.generate_recycling_recipe(data.raw["recipe"]["atan-atom-forge"])
+    H3_ARIG_RECYCLING.generate_recycling_recipe(data.raw["recipe"]["centrifuge"])
+    H3_ARIG_RECYCLING.generate_recycling_recipe(data.raw["recipe"]["nuclear-reactor"])
+    H3_ARIG_RECYCLING.generate_recycling_recipe(data.raw["recipe"]["fission-reactor-equipment"])
+    H3_ARIG_RECYCLING.generate_recycling_recipe(data.raw["recipe"]["planetaris-sandstone-brick"])
+    H3_ARIG_RECYCLING.generate_recycling_recipe(data.raw["recipe"]["planetaris-glass-panel"])
+    H3_ARIG_RECYCLING.generate_recycling_recipe(data.raw["recipe"]["planetaris-press"])
+end
+
 -- #endregion
 
 -- #region ENTITY
@@ -458,9 +482,12 @@ end
 -- Modify Assembler 4, slight nerf to put it below the advanced assembler from AoP
 --data.raw["assembling-machine"]["planetaris-assembling-machine-4"].energy_source = {type = "void"};
 --data.raw["assembling-machine"]["planetaris-assembling-machine-4"].allowed_effects = {"speed", "productivity", "quality"};
+
+--[[
 data.raw["assembling-machine"]["planetaris-assembling-machine-4"].crafting_speed = 1.75;
 data.raw["item"]["planetaris-assembling-machine-4"].weight = data.raw["item"]["assembling-machine-3"].weight; -- only 3 could fit on a rocket for some reason
 data.raw["assembling-machine"]["planetaris-assembling-machine-4"].energy_usage = "232kW";
+]]
 
 -- Modify Atom Forge, halved energy usage to justify higher crafting costs
 --data.raw["assembling-machine"]["atan-atom-forge"].energy_source = {type = "void"};
@@ -532,25 +559,30 @@ if mods["AtomicRobotsFix2Boost"] then
     data.raw["recipe"]["atomic-logistic-robot"].category = "advanced-centrifuging-or-crafting";
     removeItemFromRecipe("atomic-logistic-robot", "fission-reactor-equipment");
     addItemToRecipe("atomic-logistic-robot", "uranium-fuel-cell", 1);
-    addItemToRecipe("atomic-logistic-robot", "planetaris-simulating-unit", 1);
+    addItemToRecipe("atomic-logistic-robot", "planetaris-raw-diamond", 1);
     addItemToRecipe("atomic-logistic-robot", "supercapacitor", 2);
     addItemToRecipe("atomic-logistic-robot", "low-density-structure", 1);
 
     data.raw["recipe"]["atomic-construction-robot"].category = "advanced-centrifuging-or-crafting";
     removeItemFromRecipe("atomic-construction-robot", "fission-reactor-equipment");
     addItemToRecipe("atomic-construction-robot", "uranium-fuel-cell", 1);
-    addItemToRecipe("atomic-construction-robot", "planetaris-simulating-unit", 1);
+    addItemToRecipe("atomic-construction-robot", "planetaris-raw-diamond", 1);
     addItemToRecipe("atomic-construction-robot", "superconductor", 2);
     addItemToRecipe("atomic-construction-robot", "low-density-structure", 1);
 
+    if H3_ARIG_RECYCLING ~= nil then
+        H3_ARIG_RECYCLING.generate_recycling_recipe(data.raw["recipe"]["atomic-logistic-robot"])
+        H3_ARIG_RECYCLING.generate_recycling_recipe(data.raw["recipe"]["atomic-construction-robot"])
+    end
+
     -- Tech
-    data.raw["technology"]["atomic-logistic-robots"].prerequisites = {"utility-science-pack", "planetaris-simulating-unit", "electromagnetic-science-pack"};
+    data.raw["technology"]["atomic-logistic-robots"].prerequisites = {"utility-science-pack", "planetaris-compression-science", "electromagnetic-science-pack"};
     addPackToTech("atomic-logistic-robots", "utility-science-pack", 1);
     addPackToTech("atomic-logistic-robots", "space-science-pack", 1);
     addPackToTech("atomic-logistic-robots", "planetaris-compression-science-pack", 1);
     addPackToTech("atomic-logistic-robots", "electromagnetic-science-pack", 1);
 
-    data.raw["technology"]["atomic-construction-robots"].prerequisites = {"utility-science-pack", "planetaris-simulating-unit", "electromagnetic-science-pack"};
+    data.raw["technology"]["atomic-construction-robots"].prerequisites = {"utility-science-pack", "planetaris-compression-science", "electromagnetic-science-pack"};
     addPackToTech("atomic-construction-robots", "utility-science-pack", 1);
     addPackToTech("atomic-construction-robots", "space-science-pack", 1);
     addPackToTech("atomic-construction-robots", "planetaris-compression-science-pack", 1);
