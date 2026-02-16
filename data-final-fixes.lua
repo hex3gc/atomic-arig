@@ -149,31 +149,44 @@ end
 -- Replace nuclear science pack with compression science
 for i, technology in pairs(data.raw["technology"]) do
     if technology.prerequisites then
-        for j, prerequisite in pairs(technology.prerequisites) do
+
+        local function hasPrereq(name)
+            for _, p in ipairs(technology.prerequisites) do
+                if p == name then return true end
+            end
+            return false
+        end
+
+        for j = #technology.prerequisites, 1, -1 do
+            local prerequisite = technology.prerequisites[j]
             if prerequisite == "nuclear-science-pack" then
                 table.remove(technology.prerequisites, j);
-                table.insert(technology.prerequisites, "planetaris-compression-science");
+                if not hasPrereq("planetaris-compression-science") then
+                    table.insert(technology.prerequisites, "planetaris-compression-science");
+                end
             end
             if prerequisite == "planetaris-heavy-glass" or prerequisite == "planetaris-glass" then -- Remove glass prereqs
                 table.remove(technology.prerequisites, j);
-                table.insert(technology.prerequisites, "planetaris-sand-sifting");
+                if not hasPrereq("planetaris-sand-sifting") then
+                    table.insert(technology.prerequisites, "planetaris-sand-sifting");
+                end
             end
         end
     end
     if technology.unit then
         local foundCompressionPack = false;
         local removedNuclearPack = false;
-        for j, ingredient in pairs(technology.unit.ingredients) do
+        for j = #technology.unit.ingredients, 1, -1 do
+            local ingredient = technology.unit.ingredients[j]
             if ingredient[1] == "nuclear-science-pack" then
                 table.remove(technology.unit.ingredients, j);
                 removedNuclearPack = true;
-            end
-            if ingredient[1] == "planetaris-compression-science-pack" then
+            elseif ingredient[1] == "planetaris-compression-science-pack" then
                 foundCompressionPack = true;
             end
         end
-        if foundCompressionPack == false and removedNuclearPack == true and technology.name ~= "science-pack-productivity" then
-            table.insert(technology.unit.ingredients, {"planetaris-compression-science-pack", 1}); -- Secretas science pack productivity breaks this somehow?? idk man
+        if foundCompressionPack == false and removedNuclearPack == true then
+            table.insert(technology.unit.ingredients, {"planetaris-compression-science-pack", 1}); -- Secretas science pack productivity breaks this somehow?? idk man (maybe this is fixed now)
         end
     end
 end
