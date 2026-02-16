@@ -52,77 +52,60 @@ end
 -- #region PLANET
 
 -- Add uranium ore to Arig
-data.raw["planet"]["arig"].map_gen_settings.autoplace_controls =
+local arig_map_gen = data.raw["planet"]["arig"].map_gen_settings
+
+local arig_autoplace_controls_to_add =
 {
-    ["arig_sand"] = 
-    {
-        frequency = 10,
-        Size = 10,
-    },
-    ["stone"] = 
-    {
-        frequency = 2,
-        Size = 2,
-    },
     ["uranium-ore"] = -- Add uranium ore
     {
         richness = 1,
         frequency = 6,
-        Size = 1,
-    },
-    ["arig_cliff"] = {},
-    ["arig_rocks"] = {},
-    ["arig_crash"] = {},
-    ["heavy-oil-geyser"] = 
-    {
-        richness = 2,
-        frequency = 10,
-        Size = 4,
-    },
-};
-data.raw["planet"]["arig"].map_gen_settings.autoplace_settings =
+        size = 1,
+    }
+}
+
+arig_map_gen.autoplace_controls = arig_map_gen.autoplace_controls or {}
+for control_name, control_value in pairs(arig_autoplace_controls_to_add) do
+    local existing_control = arig_map_gen.autoplace_controls[control_name]
+    if existing_control == nil then
+        arig_map_gen.autoplace_controls[control_name] = table.deepcopy(control_value)
+    end
+end
+
+local arig_autoplace_settings_to_add =
 {
     ["tile"] =
     {
         settings =
         {
-        ["arig-sand"] = {},
-        ["planetaris-sandstone-1"] = {},
-        ["planetaris-sandstone-2"] = {},
-        ["planetaris-sandstone-3"] = {},
-        ["planetaris-arig-rock"] = {},
         }
     },
     ["decorative"] =
     {
         settings =
         {
-        ["arig-red-desert-decal"] = {},
-        ["arig-sand-decal"] = {},
-        ["arig-brown-fluff"] = {},
-        ["arig-brown-fluff-dry"] = {},
-        ["arig-small-sand-rock"] = {},
-        ["arig-small-cactus"] = {},
-        ["arig-crack-decal"] = {},
-        ["arig-crack-decal-large"] = {},
-        ["arig-tiny-rock-cluster"] = {},
-        ["arig-dune-decal"] = {},
-        ["arig-pumice-relief-decal"] = {},
         }
     },
     ["entity"] =
     {
         settings =
         {
-        ["stone"] = {},
-        ["uranium-ore"] = {},
-        ["arig-big-sand-rock"] = {},
-        ["arig-medium-sand-rock"] = {},
-        ["heavy-oil-geyser"] = {},
-        ["arig-crash"] = {},
+            ["uranium-ore"] = {}
         }
     }
-};
+}
+
+arig_map_gen.autoplace_settings = arig_map_gen.autoplace_settings or {}
+for category_name, category_settings in pairs(arig_autoplace_settings_to_add) do
+    arig_map_gen.autoplace_settings[category_name] = arig_map_gen.autoplace_settings[category_name] or {}
+    arig_map_gen.autoplace_settings[category_name].settings = arig_map_gen.autoplace_settings[category_name].settings or {}
+
+    for setting_name, setting_value in pairs(category_settings.settings) do
+        if arig_map_gen.autoplace_settings[category_name].settings[setting_name] == nil then
+            arig_map_gen.autoplace_settings[category_name].settings[setting_name] = table.deepcopy(setting_value)
+        end
+    end
+end
 
 -- Change space location params
 data.raw["planet"]["arig"].orientation = 0.40;
