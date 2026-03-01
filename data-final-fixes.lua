@@ -102,7 +102,6 @@ data.raw["planet"]["arig"].map_gen_settings.autoplace_settings =
         ["arig-brown-fluff"] = {},
         ["arig-brown-fluff-dry"] = {},
         ["arig-small-sand-rock"] = {},
-        ["arig-small-cactus"] = {},
         ["arig-crack-decal"] = {},
         ["arig-crack-decal-large"] = {},
         ["arig-tiny-rock-cluster"] = {},
