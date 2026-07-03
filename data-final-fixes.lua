@@ -54,16 +54,11 @@ end
 -- Add uranium ore to Arig
 data.raw["planet"]["arig"].map_gen_settings.autoplace_controls =
 {
-    ["arig_sand"] = 
-    {
-        frequency = 10,
-        Size = 10,
-    },
-    ["stone"] = 
-    {
-        frequency = 2,
-        Size = 2,
-    },
+    ["arig_sand"] = {
+          size = 1,
+          frequency = 1,
+          },
+    ["arig_stone"] = {},
     ["uranium-ore"] = -- Add uranium ore
     {
         richness = 1,
@@ -86,40 +81,43 @@ data.raw["planet"]["arig"].map_gen_settings.autoplace_settings =
     {
         settings =
         {
-        ["arig-sand"] = {},
-        ["planetaris-sandstone-1"] = {},
-        ["planetaris-sandstone-2"] = {},
-        ["planetaris-sandstone-3"] = {},
-        ["planetaris-arig-rock"] = {},
+            ["arig-sand"] = {},
+            ["arig-deep-sand"] = {},
+            ["arig-stable-sand"] = {},
+            ["planetaris-sandstone-1"] = {},
+            ["planetaris-sandstone-2"] = {},
+            ["planetaris-sandstone-3"] = {},
+            ["planetaris-arig-rock"] = {},
         }
     },
     ["decorative"] =
     {
         settings =
         {
-        ["arig-red-desert-decal"] = {},
-        ["arig-sand-decal"] = {},
-        ["arig-brown-fluff"] = {},
-        ["arig-brown-fluff-dry"] = {},
-        ["arig-small-sand-rock"] = {},
-        ["arig-small-cactus"] = {},
-        ["arig-crack-decal"] = {},
-        ["arig-crack-decal-large"] = {},
-        ["arig-tiny-rock-cluster"] = {},
-        ["arig-dune-decal"] = {},
-        ["arig-pumice-relief-decal"] = {},
+            ["arig-red-desert-decal"] = {},
+            ["arig-sand-decal"] = {},
+            ["arig-brown-fluff"] = {},
+            ["arig-brown-fluff-dry"] = {},
+            ["arig-small-sand-rock"] = {},
+            ["arig-crack-decal"] = {},
+            ["arig-crack-decal-large"] = {},
+            ["arig-tiny-rock-cluster"] = {},
+            ["arig-dune-decal"] = {},
+            ["arig-pumice-relief-decal"] = {},
+
         }
     },
     ["entity"] =
     {
         settings =
         {
-        ["stone"] = {},
-        ["uranium-ore"] = {},
-        ["arig-big-sand-rock"] = {},
-        ["arig-medium-sand-rock"] = {},
-        ["heavy-oil-geyser"] = {},
-        ["arig-crash"] = {},
+            ["stone"] = {},
+            ["uranium-ore"] = {},
+            ["arig-big-sand-rock"] = {},
+            ["arig-medium-sand-rock"] = {},
+            ["arig-small-cactus-plant"] = {},
+            ["heavy-oil-geyser"] = {},
+            ["arig-crash"] = {},
         }
     }
 };
