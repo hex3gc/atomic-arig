@@ -444,17 +444,17 @@ if settings.startup["h3-arig-lubricatedPress"].value == true then
     addFluidToRecipe("planetaris-plastic-bar", "petroleum-gas", 20);
     addFluidToRecipe("planetaris-plastic-bar", "lubricant", 10);
 
-    removeItemFromRecipe("planetaris-solid-fuel-from-heavy-oil", "heavy-oil");
-    addFluidToRecipe("planetaris-solid-fuel-from-heavy-oil", "heavy-oil", 5);
-    addFluidToRecipe("planetaris-solid-fuel-from-heavy-oil", "lubricant", 10);
+    removeItemFromRecipe("solid-fuel-from-heavy-oil", "heavy-oil");
+    addFluidToRecipe("solid-fuel-from-heavy-oil", "heavy-oil", 5);
+    addFluidToRecipe("solid-fuel-from-heavy-oil", "lubricant", 10);
 
-    removeItemFromRecipe("planetaris-solid-fuel-from-light-oil", "light-oil");
-    addFluidToRecipe("planetaris-solid-fuel-from-light-oil", "light-oil", 5);
-    addFluidToRecipe("planetaris-solid-fuel-from-light-oil", "lubricant", 10);
+    removeItemFromRecipe("solid-fuel-from-light-oil", "light-oil");
+    addFluidToRecipe("solid-fuel-from-light-oil", "light-oil", 5);
+    addFluidToRecipe("solid-fuel-from-light-oil", "lubricant", 10);
 
-    removeItemFromRecipe("planetaris-solid-fuel-from-petroleum-gas", "petroleum-gas");
-    addFluidToRecipe("planetaris-solid-fuel-from-petroleum-gas", "petroleum-gas", 15);
-    addFluidToRecipe("planetaris-solid-fuel-from-petroleum-gas", "lubricant", 10);
+    removeItemFromRecipe("solid-fuel-from-petroleum-gas", "petroleum-gas");
+    addFluidToRecipe("solid-fuel-from-petroleum-gas", "petroleum-gas", 15);
+    addFluidToRecipe("solid-fuel-from-petroleum-gas", "lubricant", 10);
 
     addFluidToRecipe("planetaris-carbon", "lubricant", 10);
 end
