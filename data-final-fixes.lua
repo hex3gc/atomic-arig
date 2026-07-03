@@ -115,7 +115,7 @@ data.raw["planet"]["arig"].map_gen_settings.autoplace_settings =
             ["uranium-ore"] = {},
             ["arig-big-sand-rock"] = {},
             ["arig-medium-sand-rock"] = {},
-            ["arig-small-cactus-plant"] = {},
+            ["planetaris-cactus-plant"] = {},
             ["heavy-oil-geyser"] = {},
             ["arig-crash"] = {},
         }
