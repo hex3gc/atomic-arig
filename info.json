@@ -11,6 +11,7 @@
     "base >= 2.0.0",
     "atan-nuclear-science",
     "planetaris-arig",
+    "? planetaris-hyarion",
     "? AtomicRobotsFix2Boost"
   ],
   "quality_required": false,
