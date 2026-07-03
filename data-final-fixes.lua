@@ -149,14 +149,18 @@ end
 -- Replace nuclear science pack with compression science
 for i, technology in pairs(data.raw["technology"]) do
     if technology.prerequisites then
-        for j, prerequisite in pairs(technology.prerequisites) do
+        for j = #technology.prerequisites, 1, -1 do
+            local prerequisite = technology.prerequisites[j]
             if prerequisite == "nuclear-science-pack" then
                 table.remove(technology.prerequisites, j);
-                table.insert(technology.prerequisites, "planetaris-compression-science");
-            end
-            if prerequisite == "planetaris-heavy-glass" or prerequisite == "planetaris-glass" then -- Remove glass prereqs
+                if not doesTableContain(technology.prerequisites, "planetaris-compression-science") then
+                    table.insert(technology.prerequisites, "planetaris-compression-science");
+                end
+            elseif prerequisite == "planetaris-heavy-glass" or prerequisite == "planetaris-glass" then -- Remove glass prereqs
                 table.remove(technology.prerequisites, j);
-                table.insert(technology.prerequisites, "planetaris-sand-sifting");
+                if not doesTableContain(technology.prerequisites, "planetaris-sand-sifting") then
+                    table.insert(technology.prerequisites, "planetaris-sand-sifting");
+                end
             end
         end
     end
