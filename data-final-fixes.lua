@@ -54,16 +54,11 @@ end
 -- Add uranium ore to Arig
 data.raw["planet"]["arig"].map_gen_settings.autoplace_controls =
 {
-    ["arig_sand"] = 
-    {
-        frequency = 10,
-        Size = 10,
-    },
-    ["stone"] = 
-    {
-        frequency = 2,
-        Size = 2,
-    },
+    ["arig_sand"] = {
+          size = 1,
+          frequency = 1,
+          },
+    ["arig_stone"] = {},
     ["uranium-ore"] = -- Add uranium ore
     {
         richness = 1,
@@ -86,40 +81,43 @@ data.raw["planet"]["arig"].map_gen_settings.autoplace_settings =
     {
         settings =
         {
-        ["arig-sand"] = {},
-        ["planetaris-sandstone-1"] = {},
-        ["planetaris-sandstone-2"] = {},
-        ["planetaris-sandstone-3"] = {},
-        ["planetaris-arig-rock"] = {},
+            ["arig-sand"] = {},
+            ["arig-deep-sand"] = {},
+            ["arig-stable-sand"] = {},
+            ["planetaris-sandstone-1"] = {},
+            ["planetaris-sandstone-2"] = {},
+            ["planetaris-sandstone-3"] = {},
+            ["planetaris-arig-rock"] = {},
         }
     },
     ["decorative"] =
     {
         settings =
         {
-        ["arig-red-desert-decal"] = {},
-        ["arig-sand-decal"] = {},
-        ["arig-brown-fluff"] = {},
-        ["arig-brown-fluff-dry"] = {},
-        ["arig-small-sand-rock"] = {},
-        ["arig-small-cactus"] = {},
-        ["arig-crack-decal"] = {},
-        ["arig-crack-decal-large"] = {},
-        ["arig-tiny-rock-cluster"] = {},
-        ["arig-dune-decal"] = {},
-        ["arig-pumice-relief-decal"] = {},
+            ["arig-red-desert-decal"] = {},
+            ["arig-sand-decal"] = {},
+            ["arig-brown-fluff"] = {},
+            ["arig-brown-fluff-dry"] = {},
+            ["arig-small-sand-rock"] = {},
+            ["arig-crack-decal"] = {},
+            ["arig-crack-decal-large"] = {},
+            ["arig-tiny-rock-cluster"] = {},
+            ["arig-dune-decal"] = {},
+            ["arig-pumice-relief-decal"] = {},
+
         }
     },
     ["entity"] =
     {
         settings =
         {
-        ["stone"] = {},
-        ["uranium-ore"] = {},
-        ["arig-big-sand-rock"] = {},
-        ["arig-medium-sand-rock"] = {},
-        ["heavy-oil-geyser"] = {},
-        ["arig-crash"] = {},
+            ["stone"] = {},
+            ["uranium-ore"] = {},
+            ["arig-big-sand-rock"] = {},
+            ["arig-medium-sand-rock"] = {},
+            ["planetaris-cactus-plant"] = {},
+            ["heavy-oil-geyser"] = {},
+            ["arig-crash"] = {},
         }
     }
 };
@@ -149,14 +147,18 @@ end
 -- Replace nuclear science pack with compression science
 for i, technology in pairs(data.raw["technology"]) do
     if technology.prerequisites then
-        for j, prerequisite in pairs(technology.prerequisites) do
+        for j = #technology.prerequisites, 1, -1 do
+            local prerequisite = technology.prerequisites[j]
             if prerequisite == "nuclear-science-pack" then
                 table.remove(technology.prerequisites, j);
-                table.insert(technology.prerequisites, "planetaris-compression-science");
-            end
-            if prerequisite == "planetaris-heavy-glass" or prerequisite == "planetaris-glass" then -- Remove glass prereqs
+                if not doesTableContain(technology.prerequisites, "planetaris-compression-science") then
+                    table.insert(technology.prerequisites, "planetaris-compression-science");
+                end
+            elseif prerequisite == "planetaris-heavy-glass" or prerequisite == "planetaris-glass" then -- Remove glass prereqs
                 table.remove(technology.prerequisites, j);
-                table.insert(technology.prerequisites, "planetaris-sand-sifting");
+                if not doesTableContain(technology.prerequisites, "planetaris-sand-sifting") then
+                    table.insert(technology.prerequisites, "planetaris-sand-sifting");
+                end
             end
         end
     end
@@ -444,17 +446,17 @@ if settings.startup["h3-arig-lubricatedPress"].value == true then
     addFluidToRecipe("planetaris-plastic-bar", "petroleum-gas", 20);
     addFluidToRecipe("planetaris-plastic-bar", "lubricant", 10);
 
-    removeItemFromRecipe("planetaris-solid-fuel-from-heavy-oil", "heavy-oil");
-    addFluidToRecipe("planetaris-solid-fuel-from-heavy-oil", "heavy-oil", 5);
-    addFluidToRecipe("planetaris-solid-fuel-from-heavy-oil", "lubricant", 10);
+    removeItemFromRecipe("solid-fuel-from-heavy-oil", "heavy-oil");
+    addFluidToRecipe("solid-fuel-from-heavy-oil", "heavy-oil", 5);
+    addFluidToRecipe("solid-fuel-from-heavy-oil", "lubricant", 10);
 
-    removeItemFromRecipe("planetaris-solid-fuel-from-light-oil", "light-oil");
-    addFluidToRecipe("planetaris-solid-fuel-from-light-oil", "light-oil", 5);
-    addFluidToRecipe("planetaris-solid-fuel-from-light-oil", "lubricant", 10);
+    removeItemFromRecipe("solid-fuel-from-light-oil", "light-oil");
+    addFluidToRecipe("solid-fuel-from-light-oil", "light-oil", 5);
+    addFluidToRecipe("solid-fuel-from-light-oil", "lubricant", 10);
 
-    removeItemFromRecipe("planetaris-solid-fuel-from-petroleum-gas", "petroleum-gas");
-    addFluidToRecipe("planetaris-solid-fuel-from-petroleum-gas", "petroleum-gas", 15);
-    addFluidToRecipe("planetaris-solid-fuel-from-petroleum-gas", "lubricant", 10);
+    removeItemFromRecipe("solid-fuel-from-petroleum-gas", "petroleum-gas");
+    addFluidToRecipe("solid-fuel-from-petroleum-gas", "petroleum-gas", 15);
+    addFluidToRecipe("solid-fuel-from-petroleum-gas", "lubricant", 10);
 
     addFluidToRecipe("planetaris-carbon", "lubricant", 10);
 end
